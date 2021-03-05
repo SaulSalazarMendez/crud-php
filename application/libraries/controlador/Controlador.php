@@ -35,8 +35,22 @@ class Controlador extends CI_Controller {
         echo 'PUT';
     }
 
-    public function list() {        
+    public function list() {
+        $default = array('offset', 'limit', 'campo', 'orden');
+        $datos = $this->uri->uri_to_assoc(3, $default);
+        if ($datos['offset'] === NULL) {
+            $datos['offset'] = 0;
+        }
+        if ($datos['limit'] === NULL) {
+            $datos['limit'] = 10;
+        }
+        $result = $this->{$this->modelo.'_model'}->list($datos);
         header('Content-Type: application/json');
-        echo 'LIST';
+        $out = array(
+            'items' => $result,
+            'limit' => $datos['limit'],
+            'offset' => $datos['offset']
+        );
+        echo json_encode($out);        
     }
 }
