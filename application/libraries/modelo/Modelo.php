@@ -37,4 +37,10 @@ class Modelo extends CI_Model {
         $query = $this->db->query("SELECT COUNT(*) as n FROM ".$this->tabla.';');        
         return $query->result();        
     }
+
+    public function put($id, $datos) {        
+        $this->db->where($this->id, $id);
+        $this->db->update($this->tabla, $datos);
+        return TRUE;
+    }
 }

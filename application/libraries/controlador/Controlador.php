@@ -38,7 +38,15 @@ class Controlador extends CI_Controller {
 
     public function put() {
         header('Content-Type: application/json');
-        echo 'PUT';
+        $default = array('id');
+        $datos = $this->uri->uri_to_assoc(3, $default);
+        $obj = file_get_contents('php://input');
+        $json = json_decode($obj);
+        $dato = $this->{$this->modelo.'_model'}->put($datos['id'], $json);
+        $out = array(
+            'success' => $dato
+        );
+        echo json_encode($out);
     }
 
     public function list() {
