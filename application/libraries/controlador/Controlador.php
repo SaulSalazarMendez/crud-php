@@ -27,7 +27,13 @@ class Controlador extends CI_Controller {
 
     public function post() {
         header('Content-Type: application/json');
-        echo 'POST';
+        $obj = file_get_contents('php://input');
+        $json = json_decode($obj);
+        $dato = $this->{$this->modelo.'_model'}->post($json);
+        $out = array(
+            'item' => $dato
+        );
+        echo json_encode($out);
     }
 
     public function put() {
@@ -45,11 +51,13 @@ class Controlador extends CI_Controller {
             $datos['limit'] = 10;
         }
         $result = $this->{$this->modelo.'_model'}->list($datos);
+        $n = $this->{$this->modelo.'_model'}->count();
         header('Content-Type: application/json');
         $out = array(
             'items' => $result,
             'limit' => $datos['limit'],
-            'offset' => $datos['offset']
+            'offset' => $datos['offset'],
+            'total' => $n['0']->n
         );
         echo json_encode($out);        
     }

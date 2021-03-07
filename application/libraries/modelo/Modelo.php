@@ -24,4 +24,17 @@ class Modelo extends CI_Model {
         $query = $this->db->get($this->tabla);
         return $query->result();        
     }
+
+    public function post($datos) {
+        $this->db->insert($this->tabla,$datos);
+        $id = $this->db->insert_id();
+        $this->db->where($this->id, $id);
+        $query = $this->db->get($this->tabla);
+        return $query->result();        
+    }
+
+    public function count() {
+        $query = $this->db->query("SELECT COUNT(*) as n FROM ".$this->tabla.';');        
+        return $query->result();        
+    }
 }
